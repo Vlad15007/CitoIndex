@@ -6,8 +6,6 @@ var recognition = new (window.SpeechRecognition ||
     window.msSpeechRecognition)();
 
 function Speech() {
-
-
     recognition.lang = 'uk-Ua'
     recognition.maxAlternatives = 1;
     recognition.interimResults = false;
