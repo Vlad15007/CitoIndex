@@ -1,27 +1,30 @@
-﻿var api = window.chrome.webview.hostObjects.apiwebcontroller;
+var api = window.chrome.webview.hostObjects.apiwebcontroller;
 
 var recognition = new (window.SpeechRecognition ||
     window.webkitSpeechRecognition ||
     window.mozSpeechRecognition ||
     window.msSpeechRecognition)();
 
-let started = false;
 function Speech() {
-    if (started) {
-        return;
-    }
-    started = true; 
+
 
     recognition.lang = 'uk-Ua'
     recognition.maxAlternatives = 1;
     recognition.interimResults = false;
     recognition.start();
+
     recognition.onresult = function (event) {
         var speechResult = event.results[event.results.length - 1][0].transcript;
+        console.log(speechResult);
         api.CallbackSpeech(speechResult);
     }
 
     recognition.onspeechend = function () {
+        setTimeout(() => recognition.start(), 1000);
+    }
+
+    recognition.onerror = function (e) {
+        console.log(e);
         setTimeout(() => recognition.start(), 1000);
     }
 }
